@@ -1,5 +1,9 @@
 {
 	"name": "shineunited/tagmanager",
+	"type": "library",
+	"description": "Basic PHP container for Google Tag Manager",
+	"keywords": ["google", "tag", "manager", "tag manager", "gtm"],
+	"license": "MIT",
 	"require": {
 		"php": ">=5.4.0"
 	},
@@ -11,6 +15,11 @@
 	"autoload": {
 		"psr-4": {
 			"ShineUnited\\TagManager\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"ShineUnited\\TagManager\\Tests\\": "tests/"
 		}
 	}
 }
