@@ -79,6 +79,10 @@ class DataLayer {
 			$output[] = $message->send($preview);
 		}
 
+		if(!$preview) {
+			$this->messages = [];
+		}
+
 		return $output;
 	}
 }
