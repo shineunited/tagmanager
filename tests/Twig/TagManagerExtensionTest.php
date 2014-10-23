@@ -1,6 +1,6 @@
 <?php
 
-namespace ShineUnited\TagManager\Test\Twig;
+namespace ShineUnited\TagManager\Tests\Twig;
 
 use ShineUnited\TagManager\Twig\TagManagerExtension;
 

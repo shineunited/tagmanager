@@ -1,6 +1,6 @@
 <?php
 
-namespace ShineUnited\TagManager\Test;
+namespace ShineUnited\TagManager\Tests;
 
 use ShineUnited\TagManager\DataLayer;
 use ShineUnited\TagManager\Message;

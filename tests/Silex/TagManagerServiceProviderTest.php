@@ -1,6 +1,6 @@
 <?php
 
-namespace ShineUnited\TagManager\Test\Silex;
+namespace ShineUnited\TagManager\Tests\Silex;
 
 use ShineUnited\TagManager\Silex\TagManagerServiceProvider;
 use Silex\Application;
