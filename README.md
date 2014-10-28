@@ -32,3 +32,34 @@ $ composer.phar update
 ```php
 include('./vendor/autoload.php');
 ```
+
+
+Usage
+-----
+
+#### Silex
+
+To use Tag Manager with Silex, register the service provider
+```php
+	use ShineUnited\TagManager\Silex\TagManagerServiceProvider();
+
+	$app->register(new TagManagerServiceProvider(), [
+		'id'      => 'GTM-XXXX', //gtm container id (required)
+		'persist' => true,       //persist datalayer in session if true (optional, defaults to false)
+		'varname' => 'gtm'       //session varname (optional, defaults to 'gtm')
+	]);
+```
+
+#### Twig
+
+The extension adds the 'gtm()' function to the Twig environment. Note: the silex service provider will automatically install the twig extension if twig is present.
+
+```html
+<html>
+<body>
+
+	...
+	{{ gtm() }}
+</body>
+</html>
+```
