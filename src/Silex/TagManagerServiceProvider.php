@@ -52,7 +52,7 @@ class TagManagerServiceProvider implements ServiceProviderInterface {
 		});
 
 		$app['gtm.datalayer'] = $app->share(function() use ($app) {
-			if(isset($app['session'])) {
+			if($app['gtm.config']['persist'] && isset($app['session'])) {
 				if(!$app['session']->has($app['gtm.config']['varname'])) {
 					$app['session']->set($app['gtm.config']['varname'], new DataLayer());
 				}
