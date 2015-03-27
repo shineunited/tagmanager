@@ -41,13 +41,25 @@ Usage
 
 To use Tag Manager with Silex, register the service provider
 ```php
-	use ShineUnited\TagManager\Silex\TagManagerServiceProvider();
+use ShineUnited\TagManager\Silex\TagManagerServiceProvider();
 
-	$app->register(new TagManagerServiceProvider(), [
+$app->register(new TagManagerServiceProvider(), [
+	'gtm.options' => [
 		'id'      => 'GTM-XXXX', //gtm container id (required)
 		'persist' => true,       //persist datalayer in session if true (optional, defaults to false)
 		'varname' => 'gtm'       //session varname (optional, defaults to 'gtm')
-	]);
+	]
+]);
+```
+
+Adding messages to the datalayer
+```php
+$app['gtm.datalayer']->push([
+	'event'     => 'gtm.eventName',
+	'eventData' => [
+		// event data goes here
+	]
+]);
 ```
 
 #### Twig
