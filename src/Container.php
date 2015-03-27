@@ -65,10 +65,19 @@ class Container {
 		}
 
 		if(!$this->datalayer->isEmpty()) {
-			$output .= '<script>dataLayer = ' . json_encode($this->datalayer->send($preview)) . ';</script>';
+			$json = json_encode($this->dataLayer->send($preview));
+
+			$output .= <<<DATALAYER
+<!-- Google Tag Manager: DataLayer -->
+<script>
+window.dataLayer = window.dataLayer || [];
+window.dataLayer.concat({$json});
+</script>
+<!-- End Google Tag Manager: DataLayer -->
+DATALAYER;
 		}
 
-		$output .=  <<<CONTAINER
+		$output .= <<<CONTAINER
 <!-- Google Tag Manager: Container -->
 <noscript><iframe src="//www.googletagmanager.com/ns.html?id={$this->id}"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
