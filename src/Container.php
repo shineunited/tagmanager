@@ -65,20 +65,18 @@ class Container {
 		}
 
 		if(!$this->datalayer->isEmpty()) {
-			$json = json_encode($this->dataLayer->send($preview));
-
-			$output .= <<<DATALAYER
-<!-- Google Tag Manager: DataLayer -->
-<script>
-window.dataLayer = window.dataLayer || [];
-window.dataLayer.concat({$json});
-</script>
-<!-- End Google Tag Manager: DataLayer -->
-DATALAYER;
+			$output .= '<!-- Begin: GTM DataLayer -->' . "\n";
+			$output .= '<script>' . "\n";
+			$output .= 'var dataLayer = dataLayer || [];' . "\n";
+			foreach($this->dataLayer->send($preview) as $message) {
+				$output .= 'dataLayer.push(' . json_encode($message) . ');' . "\n";
+			}
+			$output .= '</script>' . "\n";
+			$output .= '<!-- End: GTM DataLayer -->' . "\n";
 		}
 
 		$output .= <<<CONTAINER
-<!-- Google Tag Manager: Container -->
+<!-- Begin: GTM Container -->
 <noscript><iframe src="//www.googletagmanager.com/ns.html?id={$this->id}"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -86,7 +84,7 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','{$this->id}');</script>
-<!-- End Google Tag Manager: Container -->
+<!-- End: GTM Container -->
 CONTAINER;
 
 		return $output;
