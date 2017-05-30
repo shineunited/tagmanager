@@ -69,9 +69,23 @@ The extension adds the 'gtm()' function to the Twig environment. Note: the silex
 ```html
 <html>
 <body>
-
 	...
 	{{ gtm() }}
+</body>
+</html>
+```
+
+Or load the javascript and no-script snippets separately.
+
+```html
+<html>
+<head>
+	...
+	{{ gtm('head') }}
+</head>
+<body>
+	{{ gtm('body') }}
+	...
 </body>
 </html>
 ```
