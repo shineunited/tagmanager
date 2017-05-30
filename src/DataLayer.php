@@ -85,4 +85,25 @@ class DataLayer {
 
 		return $output;
 	}
+
+	public function render($preview = false) {
+		if($this->isEmpty()) {
+			return '';
+		}
+
+		$output = '';
+
+		if(!$this->datalayer->isEmpty()) {
+			$output .= '<!-- Begin: GTM DataLayer -->' . "\n";
+			$output .= '<script>' . "\n";
+			$output .= 'window.dataLayer = window.dataLayer || [];' . "\n";
+			foreach($this->send($preview) as $message) {
+				$output .= 'window.dataLayer.push(' . json_encode($message) . ');' . "\n";
+			}
+			$output .= '</script>' . "\n";
+			$output .= '<!-- End: GTM DataLayer -->' . "\n";
+		}
+
+		return $output;
+	}
 }

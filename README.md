@@ -19,12 +19,8 @@ $ curl -sS https://getcomposer.org/installer | php
 ```
 
 #### Add package to composer.json
-```json
-{
-	"require": {
-		"shineunited/tagmanager": "*"
-	}
-}
+```bash
+$ composer require shineunited/tagmanager
 ```
 
 #### Update dependencies
@@ -34,7 +30,7 @@ $ composer.phar update
 
 #### Include autoloader
 ```php
-include('./vendor/autoload.php');
+include(__DIR__ . '/../vendor/autoload.php');
 ```
 
 

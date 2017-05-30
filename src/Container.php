@@ -57,35 +57,29 @@ class Container {
 		throw new \InvalidArgumentException('unable to set property value: ' . $name);
 	}
 
-	public function render($preview = false) {
+	public function render($mode = 'all') {
+		$mode = strtolower(trim($mode));
+
 		$output = '';
 
 		if(!is_string($this->id)) {
 			return '';
 		}
 
-		if(!$this->datalayer->isEmpty()) {
-			$output .= '<!-- Begin: GTM DataLayer -->' . "\n";
-			$output .= '<script>' . "\n";
-			$output .= 'var dataLayer = dataLayer || [];' . "\n";
-			foreach($this->dataLayer->send($preview) as $message) {
-				$output .= 'dataLayer.push(' . json_encode($message) . ');' . "\n";
-			}
-			$output .= '</script>' . "\n";
-			$output .= '<!-- End: GTM DataLayer -->' . "\n";
+		if($mode == 'all' || $mode == 'head') {
+			// render datalayer
+			$output .= $this->dataLayer->render();
+
+			// render head block
+			$template = file_get_contents(__DIR__ . '/Resources/head.html');
+			$output .= str_replace('%GTMID%', $this->getId(), $template);
 		}
 
-		$output .= <<<CONTAINER
-<!-- Begin: GTM Container -->
-<noscript><iframe src="//www.googletagmanager.com/ns.html?id={$this->id}"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','{$this->id}');</script>
-<!-- End: GTM Container -->
-CONTAINER;
+		if($mode == 'all' || $mode == 'body') {
+			// render body block
+			$template = file_get_contents(__DIR__ . '/Resources/body.html');
+			$output .= str_replace('%GTMID%', $this->getId(), $template);
+		}
 
 		return $output;
 	}
