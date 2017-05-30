@@ -62,8 +62,10 @@ class TagManagerServiceProvider implements ServiceProviderInterface {
 
 			return new DataLayer();
 		});
+	}
 
-		// extend twig
+	public function boot(Application $app) {
+		// extend twig if present
 		if(isset($app['twig'])) {
 			$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 				$twig->addExtension(new TagManagerExtension($app['gtm.container']));
@@ -72,6 +74,4 @@ class TagManagerServiceProvider implements ServiceProviderInterface {
 			}));
 		}
 	}
-
-	public function boot(Application $app) {}
 }
