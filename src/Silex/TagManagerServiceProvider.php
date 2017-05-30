@@ -5,15 +5,16 @@ namespace ShineUnited\TagManager\Silex;
 use ShineUnited\TagManager\Container;
 use ShineUnited\TagManager\DataLayer;
 use ShineUnited\TagManager\Twig\TagManagerExtension;
+use Pimple\Container AS PimpleContainer;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
 
 
-class TagManagerServiceProvider implements ServiceProviderInterface {
+class TagManagerServiceProvider implements ServiceProviderInterface, BootableProviderInterface {
 
-	public function register(Application $app) {
-
-		$app['gtm.config'] = $app->share(function() use ($app) {
+	public function register(PimpleContainer $app) {
+		$app['gtm.config'] = function() use ($app) {
 			$config = [];
 
 			// id
@@ -42,16 +43,16 @@ class TagManagerServiceProvider implements ServiceProviderInterface {
 			}
 
 			return $config;
-		});
+		};
 
-		$app['gtm.container'] = $app->share(function() use ($app) {
+		$app['gtm.container'] = function() use ($app) {
 			return new Container(
 				$app['gtm.config']['id'],
 				$app['gtm.datalayer']
 			);
-		});
+		};
 
-		$app['gtm.datalayer'] = $app->share(function() use ($app) {
+		$app['gtm.datalayer'] = function() use ($app) {
 			if($app['gtm.config']['persist'] && isset($app['session'])) {
 				if(!$app['session']->has($app['gtm.config']['varname'])) {
 					$app['session']->set($app['gtm.config']['varname'], new DataLayer());
@@ -61,17 +62,17 @@ class TagManagerServiceProvider implements ServiceProviderInterface {
 			}
 
 			return new DataLayer();
-		});
+		};
 	}
 
 	public function boot(Application $app) {
 		// extend twig if present
 		if(isset($app['twig'])) {
-			$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+			$app['twig'] = $app->extend('twig', function($twig, $app) {
 				$twig->addExtension(new TagManagerExtension($app['gtm.container']));
 
 				return $twig;
-			}));
+			});
 		}
 	}
 }
